@@ -8,9 +8,7 @@ output:
   word_document: default
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 
 # Abstract
 
@@ -54,7 +52,8 @@ Because LD is a nationally notifiable disease, it is important to note that the 
 # Analysis Setup
 
 First we need to load some necessary packages.
-```{r}
+
+```r
   pacman::p_load(readxl, tidyverse, rstudioapi, rmarkdown, lubridate, epitools, gridExtra, knitr, kableExtra, viridis, stringr, sf, rvest, rgdal, sp, ggsn, RColorBrewer, maptools, here, rgeos, ggthemes, grid, cowplot, ggpubr, brms, tidybayes)
 ```
 
@@ -87,36 +86,36 @@ Then we need to load our data:
 
     County-level population data was gathered from the Census and American Fact Finder, Annual Estimates of the Resident Population for Selected Age Groups by Sex for the United States, States, Counties and Puerto Rico Commonwealth and Municipios: April 1, 2010 to July 1, 2017 table (PEPAGESEX). We assumed a simple linear population change between mid-year (July 1) estimates for all counties.
     
-    ```{r}
-
-# Using here() and a folder named 'data' to load files
-# here()
-# Inside here() should be a folder labeled 'data' with all line list data
-# Inside here() should be a secon folder labeled 'shapefiles' with county and census tract shapefiles
-
-#Load monthly CDC WONDER control data + MDHHS LD case counts
-pneu_wonder <- read_excel(path=here("data/WONDER_Data.xlsx"),
+    
+    ```r
+    # Using here() and a folder named 'data' to load files
+    # here()
+    # Inside here() should be a folder labeled 'data' with all line list data
+    # Inside here() should be a secon folder labeled 'shapefiles' with county and census tract shapefiles
+    
+    #Load monthly CDC WONDER control data + MDHHS LD case counts
+    pneu_wonder <- read_excel(path=here("data/WONDER_Data.xlsx"),
                           sheet = "WONDER") 
-
-#Load month-to-quarter lookup table
-qtrs <- read.csv(here("data/quarters.csv"))
-# colnames(qtrs) <- c("Month_Code", "Quarter", "Month", "FluSeason")
-#NOTE: "FluSeason = 2013" runs from October 2012-September 2013, and so on. Because
-#"pneumonia" deaths often vary substantially based on flu severity we chose to use a
-#October-September rather than a traditional calendar year to control for long-term
-#year-to-year changes in pneumonia mortality.
-
- #Load county-level population data
-  #NOTE: Monthly populations calculated in Excel assuming linear trend between Census midpoint (July 1) estimates for each year
-  pop <- read_excel(path = here("data/WONDER_Data.xlsx"),
+    
+    #Load month-to-quarter lookup table
+    qtrs <- read.csv(here("data/quarters.csv"))
+    # colnames(qtrs) <- c("Month_Code", "Quarter", "Month", "FluSeason")
+    #NOTE: "FluSeason = 2013" runs from October 2012-September 2013, and so on. Because
+    #"pneumonia" deaths often vary substantially based on flu severity we chose to use a
+    #October-September rather than a traditional calendar year to control for long-term
+    #year-to-year changes in pneumonia mortality.
+    
+     #Load county-level population data
+      #NOTE: Monthly populations calculated in Excel assuming linear trend between Census midpoint (July 1) estimates for each year
+      pop <- read_excel(path = here("data/WONDER_Data.xlsx"),
                     sheet = "Pop_Census_AFF")
-  pop <- pop[, -grep("Mid", colnames(pop))]
-  
-#Load all Genesee County pneumonia deaths
-pneu_genesee <- read_excel(path=here("data/Deidentified Pneumonia deaths GeoId.xlsx"),
+      pop <- pop[, -grep("Mid", colnames(pop))]
+      
+    #Load all Genesee County pneumonia deaths
+    pneu_genesee <- read_excel(path=here("data/Deidentified Pneumonia deaths GeoId.xlsx"),
                           sheet = "All",
                           col_types = c("numeric", "date", "text", "text", "numeric"))
-```
+    ```
     
 
 ### Data for Mapping Analyses
@@ -162,8 +161,8 @@ pneu_genesee <- read_excel(path=here("data/Deidentified Pneumonia deaths GeoId.x
 
 
 
-```{r}
 
+```r
 # Read in data on LD deaths/cases
 ld <- read.csv(here("data/Genesee County Legionnaires deaths De-Identified GEOIDS.csv"))
 ld_red <-  as.data.frame(cbind(ld$Unique.ID, 
@@ -172,6 +171,13 @@ ld_red <-  as.data.frame(cbind(ld$Unique.ID,
                                as.character(ld$CountyVsCity), 
                                as.character(ld$GeoID), 
                                as.character(ld$DiedWhileHospitalizedWithLegionnairesOrWithin30DaysFromLeavingHospital)))
+```
+
+```
+## Warning: 34 failed to parse.
+```
+
+```r
 colnames(ld_red) <- c("UniqueID", "HospAdmitDate", "DateofDeath", "countycity", "GeoID", "usedeathdate")
 
 ld_red <- ld_red[ld_red$countycity == "COUNTY -- genesee" | ld_red$countycity == "CITY -- Flint", ]  # Remove LD cases not residents of GC (n=2)
@@ -195,9 +201,34 @@ ld_red$ctr <- str_sub(ld_red$GeoID , -9)
 
 # Read in Genesee County shapefiles and population statistics
 counties <- st_read(here("data/Counties_v17a/Counties_v17a.shp"))
-ctracts <- st_read(here("data/2010_Census_Tracts_v17a/2010_Census_Tracts_v17a.shp"))
-ctracts_pop <- read.csv(here("data/pop_byctract.csv"))
+```
 
+```
+## Reading layer `Counties_v17a' from data source `C:\Users\elzat\Dropbox\Frontline_Legionella\Analysis\Final_Analysis\data\Counties_v17a\Counties_v17a.shp' using driver `ESRI Shapefile'
+## Simple feature collection with 83 features and 15 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: -90.41829 ymin: 41.69613 xmax: -82.41348 ymax: 48.26269
+## epsg (SRID):    4326
+## proj4string:    +proj=longlat +datum=WGS84 +no_defs
+```
+
+```r
+ctracts <- st_read(here("data/2010_Census_Tracts_v17a/2010_Census_Tracts_v17a.shp"))
+```
+
+```
+## Reading layer `2010_Census_Tracts_v17a' from data source `C:\Users\elzat\Dropbox\Frontline_Legionella\Analysis\Final_Analysis\data\2010_Census_Tracts_v17a\2010_Census_Tracts_v17a.shp' using driver `ESRI Shapefile'
+## Simple feature collection with 2773 features and 14 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: -90.41829 ymin: 41.69613 xmax: -82.41348 ymax: 48.26269
+## epsg (SRID):    4326
+## proj4string:    +proj=longlat +datum=WGS84 +no_defs
+```
+
+```r
+ctracts_pop <- read.csv(here("data/pop_byctract.csv"))
 ```
 
 
@@ -210,7 +241,8 @@ The code used for cleaning and wrangling the data is below. In a nutshell, to pr
 * Calculated a mortality rate and 95% CIs around the rate using a Poisson distribution
 
 
-```{r}
+
+```r
 #Count Genesee County pneumonia deaths by month and link to WONDER data
 pd_link <- pd %>% 
   mutate(DateOfDeath = as.Date(DateOfDeath, format = "%m/%d/%Y")) %>% 
@@ -274,7 +306,19 @@ rm(pd_link)
     mutate(axis_date = as.Date(str_c(str_sub(Month_Code, 1, 4), "-",
                              str_sub(Month_Code, 6, 7),"-01")),
            FluSeason = factor(FluSeason))
-  
+```
+
+```
+## Warning in eval_tidy(pair$rhs, env = default_env): NAs introduced by
+## coercion
+```
+
+```
+## Warning: Column `Month_Code` joining character vector and factor, coercing
+## into character vector
+```
+
+```r
   #Add in 95% CIs for rates
   ci <- pois.exact(x = deaths_full$Deaths, pt = deaths_full$Pop, conf.level = 0.95)
   deaths_full <- deaths_full %>% 
@@ -285,7 +329,6 @@ rm(pd_link)
 #Dates to place vertical lines on figures below  
 water_dates <- c(as.Date("2014-04-25"), as.Date("2015-10-16"))
 leg_ob_dates <- c(as.Date("2014-06-01"), as.Date("2015-10-31"))
-
 ```
 
 
@@ -293,8 +336,8 @@ For the mapping analyses we:
     
 * Brought in geographic 'shapefiles' to use for mapping
 
-```{r}
 
+```r
 ## Filter shapefiles to keep only what we'll need for maps
 
 # Create shapefile with only census tracts in Genesee County
@@ -361,7 +404,6 @@ nonflint_ctracts_sw <- ctracts %>%
 nonflint_ctracts_se <- ctracts %>%
   filter(NAME %in% se_nonfl_tracts
          & CNTY_CODE == "049")
-
 ```
 
 * Defined the time periods of interest for the maps, which are:
@@ -376,8 +418,8 @@ nonflint_ctracts_se <- ctracts %>%
        + May-Oct 2011, 2012, 2013
        + May-Oct 2016, 2017
        
-```{r}
 
+```r
 # Define the time periods of interest for maps.
   
 # 1. The entire duration of Legionnaires' outbreak: May 2014 - October 2015 ('out')
@@ -482,13 +524,12 @@ colnames(ld_frst6mo) <- c("ctr", "ld_frst6mo", "n_ld_frst6mo")
 ld_out<- ld_red %>% group_by(ctr, out) %>% tally()
 ld_out <- ld_out[!is.na(ld_out$out), ]
 colnames(ld_out) <- c("ctr", "ld_out", "n_ld_out")
-
 ```
 
 * Calculated incidence in each time period for both LD cases and pneumonia mortality
 
-```{r fig.height = 10, fig.width = 10}
 
+```r
 # Extract the last 9 digits of the GEO code (which indicate census tract, county) for linking with shapefile
 ctracts_pop$Id2 <- as.character(ctracts_pop$Id2)
 ctracts_pop$Id2 <- str_sub(ctracts_pop$Id2 , -9)
@@ -656,7 +697,6 @@ ctracts_merge_nonflint_quad$inc_ld_out[is.na(ctracts_merge_nonflint_quad$inc_ld_
 #  theme(axis.title.y=element_text(size=10))
 
 #grid.arrange(ld_out_outliers, ld_frst5mo_outliers, pd_b4_outliers, pd_frst5mo_outliers, pd_out_outliers, nrow = 5)
-
 ```
 
 
@@ -677,7 +717,8 @@ ctracts_merge_nonflint_quad$inc_ld_out[is.na(ctracts_merge_nonflint_quad$inc_ld_
 
 **Figure 1b** depicts Genesee County LD cases by month per MDHHS.
 
-```{r, fig.height=8}
+
+```r
 graph <- deaths_full %>%
   filter(axis_date <= "2017-12-31") %>% 
   filter(Deaths_Type == "P-V" & 
@@ -729,13 +770,16 @@ geom_vline(xintercept = leg_ob_dates, color = "darkgreen") +
 grid.arrange(p1, p2, nrow = 2)
 ```
 
+![](Frontline_Legionnaires_FinalAnalysis_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+
 While the Genesee County pneumonia mortality data typically tracks with that of the control counties (rising when it rises, falling when it falls, albeit with quite a bit of noise), there is a clear 6-month period beginning in May 2014 where the two lines diverge, with Genesee remaining elevated while the control counties fall. This is during a time (spring/summer) where we would be expecting pneumonia deaths to fall but LD deaths to rise. Thus this suggests we may be seeing the beginning of the LD outbreak reflected in the pneumonia mortality numbers.
 
 Curiously, we do not same the same *clear* divergence in 2015. That said, pneumonia deaths still appear to be elevated. The pneumonia death rate in Genesee County is above that of the control counties for 5 months in 2015; this only happened in 7 months from 2011-2013.
 
 **Figure 2** zooms in on **Figure 1a** for just the period around the LD outbreak to emphasize the divergence immediately following the water switch.
 
-```{r}
+
+```r
 graph <- deaths_full %>%
   filter(axis_date <= "2016-01-01" & axis_date >= "2013-07-01") %>% 
   filter(Deaths_Type == "P-V" & 
@@ -760,8 +804,9 @@ graph %>%
 geom_vline(xintercept = leg_ob_dates, color = "darkgreen") +   
   geom_text(aes(x = leg_ob_dates[1], label="\nLD outbreak", y=80), color="darkgreen", angle=90, size = 3) +
   ggtitle("Figure 2.")
-
 ```
+
+![](Frontline_Legionnaires_FinalAnalysis_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 
 
@@ -783,8 +828,8 @@ We show the results of beginning our count of excess pneumonia deaths in June 20
 We split the outbreak into two periods: an "early" period during the first 6 months of LD (May-October 2014, a time during which pneumonia deaths were particularly elevated in **Figure 1a**), and a "late" period of the 12 succeeding months until the final LD case (November 2014-October 2015). We elected to use two periods because pneumonia mortality was particularly elevated during the early period, and including the periods separately generated a model with substantially better fit than a single term for the full outbreak period.
 
 
-```{r}
 
+```r
 model_data <- deaths_full %>%
   filter(Deaths_Type == "P-V" & 
            ((Geography == "MI + Neighbors - Medium Metro" & Source == "WONDER") |
@@ -816,6 +861,53 @@ model_data <- deaths_full %>%
 #previously-run reproducible model as m1
 m1 <- readRDS("./model_objects/Primary_Model_Bayesian.rds")
 summary(m1)
+```
+
+```
+##  Family: negbinomial 
+##   Links: mu = log; shape = identity 
+## Formula: Deaths ~ Month + FluSeason + Geography + outbreak + Geo_ob + offset(log(Pop)) 
+##    Data: model_data (Number of observations: 168) 
+## Samples: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup samples = 4000
+## 
+## Population-Level Effects: 
+##                    Estimate Est.Error l-95% CI u-95% CI Eff.Sample Rhat
+## Intercept             -9.74      0.04    -9.82    -9.66       1064 1.00
+## MonthApril            -0.29      0.05    -0.38    -0.20       1556 1.00
+## MonthAugust           -0.45      0.05    -0.54    -0.36       1422 1.00
+## MonthDecember         -0.21      0.05    -0.30    -0.12       1519 1.00
+## MonthFebruary         -0.22      0.05    -0.31    -0.13       1466 1.00
+## MonthJuly             -0.50      0.05    -0.59    -0.40       1542 1.00
+## MonthJune             -0.46      0.05    -0.55    -0.37       1510 1.00
+## MonthMarch            -0.15      0.04    -0.23    -0.06       1362 1.00
+## MonthMay              -0.36      0.05    -0.45    -0.26       1494 1.00
+## MonthNovember         -0.34      0.05    -0.44    -0.25       1538 1.00
+## MonthOctober          -0.31      0.05    -0.40    -0.22       1480 1.00
+## MonthSeptember        -0.48      0.05    -0.57    -0.38       1476 1.00
+## FluSeason2011          0.06      0.04    -0.01     0.14       2865 1.00
+## FluSeason2013         -0.02      0.03    -0.09     0.05       2380 1.00
+## FluSeason2014         -0.10      0.04    -0.18    -0.01       2153 1.00
+## FluSeason2015         -0.05      0.07    -0.20     0.09       2379 1.00
+## FluSeason2016         -0.11      0.04    -0.18    -0.04       2588 1.00
+## FluSeason2017         -0.14      0.04    -0.21    -0.07       2601 1.00
+## FluSeason2018         -0.14      0.06    -0.26    -0.02       3550 1.00
+## GeographyGenesee      -0.07      0.03    -0.13    -0.00       2702 1.00
+## outbreakEarly          0.01      0.06    -0.10     0.11       3072 1.00
+## outbreakLate           0.01      0.07    -0.12     0.16       2979 1.00
+## Geo_obGeneseeEarly     0.33      0.11     0.11     0.55       4937 1.00
+## Geo_obGeneseeLate      0.17      0.08     0.00     0.33       4587 1.00
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Eff.Sample Rhat
+## shape   200.75     54.32   116.03   328.11       3432 1.00
+## 
+## Samples were drawn using sampling(NUTS). For each parameter, Eff.Sample 
+## is a crude measure of effective sample size, and Rhat is the potential 
+## scale reduction factor on split chains (at convergence, Rhat = 1).
+```
+
+```r
 # fixef(m1)
 # plot(m1)
 # pp_check(m1)
@@ -838,7 +930,8 @@ Visualizing this model hopefully makes our conclusions clearer. **Figure 3** plo
 
 Note that the lines are only allowed to diverge during the two LD periods because that's how we coded our model. The point is that when we *allow* the lines to diverge (because we would expect LD to be affecting the rates during these times), they do.
 
-```{r}
+
+```r
 #Model predictions
 a <- fitted(m1, scale= "linear")
 model_data$pred_link <- a[,1] #These are fitted/CIs, not predict/PIs!
@@ -871,10 +964,12 @@ model_data$pred_ul <- exp(model_data$pred_link_ul)/model_data$Pop*1e6
       ggtitle("Figure 3.")
 ```
 
+![](Frontline_Legionnaires_FinalAnalysis_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+
 That graph shows that the estimated non-viral pneumonia + LD death rates are higher in Genesee during the LD outbreak. How many excess deaths does that translate to? The code below calculates that.
 
-```{r}
 
+```r
 #Make a counterfactual prediction where Genesee always follows control county trends
 model_data_cf <- model_data %>% 
   mutate(Geo_ob = "Neither")
@@ -924,6 +1019,33 @@ kable(excess_deaths, digits = 1) %>%
   row_spec(3, bold = TRUE)
 ```
 
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Time_Period </th>
+   <th style="text-align:right;"> Excess_Deaths </th>
+   <th style="text-align:left;"> CI_95 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Early: May-October 2014 (6 Months) </td>
+   <td style="text-align:right;"> 32.0 </td>
+   <td style="text-align:left;"> 9.6, 58.2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Late: November 2014-October 2015 (12 Months) </td>
+   <td style="text-align:right;"> 35.2 </td>
+   <td style="text-align:left;"> 1, 71.7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-weight: bold;"> Full Outbreak (18 Months) </td>
+   <td style="text-align:right;font-weight: bold;"> 67.2 </td>
+   <td style="text-align:left;font-weight: bold;"> 10.6, 130 </td>
+  </tr>
+</tbody>
+</table>
+
 There were about 67.2 (95% credible interval: 10.6 to 130.0) more pneumonia deaths in Genesee County during the LD outbreak than we would have expected based on what was happening in similar counties during this same time. MDHHS reported 10 official LD deaths among Genesee County residents during this period.
 
 During the early stage of the outbreak (6 months), when the largest gap was evident in **Figure 1a**, there were 32.0 (95% credible interval: 9.6 to 58.2) excess pneumonia deaths versus 4 LD deaths reported by MDHHS among Genesee residents.
@@ -934,8 +1056,8 @@ During the late stage of the outbreak (12 months) there were 35.2 (95% credible 
 
 ## Mapping Pneumonia deaths and LD cases in Genesee County
 
-```{r}
 
+```r
 # This code creates the base maps to be used in the detailed maps below.
 
 #All michigan counties (use for inset only)
@@ -946,12 +1068,48 @@ countymap <- ggplot(counties) +
             ggthemes :: theme_map() +
             theme(panel.grid.major = element_line(colour = 'transparent')) +
             geom_sf(data = gc_county, color = "black", fill = "black")
-  
+```
+
+```
+## Coordinate system already present. Adding new coordinate system, which will replace the existing one.
+```
+
+```r
 #Genesee county census tracts only
 ctractsmap <- ggplot(ctracts_merge) + 
             geom_sf(data=ctracts_merge) 
             coord_sf(crs = st_crs(4326)) 
+```
 
+```
+## <ggproto object: Class CoordSf, CoordCartesian, Coord, gg>
+##     aspect: function
+##     clip: on
+##     crs: crs
+##     datum: crs
+##     default: FALSE
+##     distance: function
+##     expand: TRUE
+##     is_free: function
+##     is_linear: function
+##     labels: function
+##     limits: list
+##     modify_scales: function
+##     ndiscr: 100
+##     range: function
+##     render_axis_h: function
+##     render_axis_v: function
+##     render_bg: function
+##     render_fg: function
+##     setup_data: function
+##     setup_layout: function
+##     setup_panel_params: function
+##     setup_params: function
+##     transform: function
+##     super:  <ggproto object: Class CoordSf, CoordCartesian, Coord, gg>
+```
+
+```r
 #Genesee county census tracts only - QUADRANTS
 ctractsmap_quad <- ggplot(ctracts_merge_quad) + 
             geom_sf(data=ctracts_merge_quad) +
@@ -969,8 +1127,8 @@ flint_ctractsmap <- ggplot(flint_ctracts) +
 
 ### Maps of LD cases by census tract and time period
 
-```{r LD incidence by census tract, out.width="75%", fig.align = 'center'}
 
+```r
 # This code plots the map for LD cases in the *first 5 months* of the LD outbreak
 ld_map_frst6mo <- ctractsmap +
           geom_sf(aes(fill = inc_ld_frst6mo)) +
@@ -993,9 +1151,18 @@ ld_map_frst6mo_quad <- ld_map_frst6mo +
           geom_sf(data = ctracts_merge_quad, color = "white", fill = NA, size = 0.20) + 
           ggtitle("First 6mo of outbreak, May-Sept 2014") +
           coord_sf(datum=NA)
+```
 
+```
+## Coordinate system already present. Adding new coordinate system, which will replace the existing one.
+```
 
+```
+## Scale for 'fill' is already present. Adding another scale for 'fill',
+## which will replace the existing scale.
+```
 
+```r
 # This code plots the map for LD cases over the *entire duration* of the LD outbreak
 ld_map_out <- ctractsmap +
           geom_sf(aes(fill = inc_ld_out)) +
@@ -1021,19 +1188,28 @@ ld_map_out_quad <- ld_map_out +
           geom_sf(data = ctracts_merge_quad, color = "white", fill = NA, size = 0.20) + 
           ggtitle("Entire outbreak, May 2014-October 2015") +
           coord_sf(datum=NA)
+```
 
+```
+## Coordinate system already present. Adding new coordinate system, which will replace the existing one.
+## Scale for 'fill' is already present. Adding another scale for 'fill',
+## which will replace the existing scale.
+```
+
+```r
 # This creates 2 panels, one of LD cases during the first 6 months of the outbreak and the other through the entire duration of the outbreak
 ld_plot <- ggarrange(ld_map_frst6mo, ld_map_out, ncol=2, common.legend = TRUE, legend="bottom")
 annotate_figure(ld_plot, top = text_grob("Figure 4. Legionnaire's cases in Genesee County, MI by census tract\nMay 2014 - October 2015", face = "bold"))
-
 ```
+
+<img src="Frontline_Legionnaires_FinalAnalysis_files/figure-html/LD incidence by census tract-1.png" width="75%" style="display: block; margin: auto;" />
 
 Most of the LD cases are in west Flint census tracts, with some cases in outlying census tracts around Flint. There are, in particular, some census tracts northwest of Flint that seem to have a particularly high number of LD cases. Note that these rates are not adjusted for any population characteristics, including age.
 
 ### Maps of pneumonia mortality by census tract and time period
 
-```{r all pneumonia mortality by census tract, out.width="75%", fig.align = 'center'}
 
+```r
 # This code plots the map for pneumonia mortality *before* the LD outbreak
 pneumo_map_b4 <- ctractsmap +
               geom_sf(aes(fill = inc_pd_b4)) +
@@ -1058,7 +1234,18 @@ pneumo_map_b4_quad <- pneumo_map_b4 +
           geom_sf(data = ctracts_merge_quad, color = "white", fill = NA, size = 0.25) + 
           ggtitle("Before outbreak, Jan 2011-April 2014") +
           coord_sf(datum=NA)
+```
 
+```
+## Coordinate system already present. Adding new coordinate system, which will replace the existing one.
+```
+
+```
+## Scale for 'fill' is already present. Adding another scale for 'fill',
+## which will replace the existing scale.
+```
+
+```r
 # Same map as above, but using matched months (May-Oct 2011-2013)
 pneumo_map_b4_match <- ctractsmap +
               geom_sf(aes(fill = inc_pd_b4.m)) +
@@ -1099,8 +1286,15 @@ pneumo_map_frst6mo_quad <- pneumo_map_frst6mo +
           geom_sf(data = ctracts_merge_quad, color = "white", fill = NA, size = 0.25) + 
           ggtitle("First 6mo of outbreak, May-October 2014") +
           coord_sf(datum=NA)
+```
 
+```
+## Coordinate system already present. Adding new coordinate system, which will replace the existing one.
+## Scale for 'fill' is already present. Adding another scale for 'fill',
+## which will replace the existing scale.
+```
 
+```r
 # This code plots the map for pneumonia mortality *for the entire duration* of the LD outbreak
 pneumo_map_out <- ctractsmap +
               geom_sf(aes(fill = inc_pd_out)) +
@@ -1124,8 +1318,15 @@ pneumo_map_out_quad <- pneumo_map_out +
           geom_sf(data = ctracts_merge_quad, color = "white", fill = NA, size = 0.25) + 
           ggtitle("Entire outbreak, May 2014-October 2015") +
           coord_sf(datum=NA)
+```
 
+```
+## Coordinate system already present. Adding new coordinate system, which will replace the existing one.
+## Scale for 'fill' is already present. Adding another scale for 'fill',
+## which will replace the existing scale.
+```
 
+```r
 # This code plots the map for pneumonia mortality *after* the LD outbreak
 pneumo_map_after <- ctractsmap +
               geom_sf(aes(fill = inc_pd_after)) +
@@ -1151,7 +1352,15 @@ pneumo_map_after_quad <- pneumo_map_after +
           geom_sf(data = ctracts_merge_quad, color = "white", fill = NA, size = 0.25) + 
           ggtitle("After outbreak, Nov 2015-Jan 2018") +
           coord_sf(datum=NA)
+```
 
+```
+## Coordinate system already present. Adding new coordinate system, which will replace the existing one.
+## Scale for 'fill' is already present. Adding another scale for 'fill',
+## which will replace the existing scale.
+```
+
+```r
 # Same map as above, but use matched months (May-October)
 pneumo_map_after_match <- ctractsmap +
               geom_sf(aes(fill = inc_pd_after.m)) +
@@ -1171,111 +1380,31 @@ pd_plot1 <- ggarrange(pneumo_map_b4, pneumo_map_frst6mo, ncol=2, legend="none")
 pd_plot2 <- ggarrange(pneumo_map_out, pneumo_map_after, ncol=2, common.legend = TRUE, legend="bottom")
 
 annotate_figure(pd_plot1, top = text_grob("Figure 5. Pneumonia mortality in Genesee County, MI by census tract\nJan 2011-Jan 2018", face = "bold"))
+```
 
+<img src="Frontline_Legionnaires_FinalAnalysis_files/figure-html/all pneumonia mortality by census tract-1.png" width="75%" style="display: block; margin: auto;" />
+
+```r
 pd_plot2
+```
 
+<img src="Frontline_Legionnaires_FinalAnalysis_files/figure-html/all pneumonia mortality by census tract-2.png" width="75%" style="display: block; margin: auto;" />
 
+```r
 # This next plot compares May-October 2014 with the *same months* in before and after periods
 pd_plot.m <- ggarrange(pneumo_map_b4_match, pneumo_map_frst6mo, pneumo_map_after_match, ncol=3, legend="none")
 
 annotate_figure(pd_plot.m, top = text_grob("Figure 6. Pneumonia mortality in Genesee County, MI by census tract\nJan 2011-Jan 2018, matched months", face = "bold"))
-
 ```
+
+<img src="Frontline_Legionnaires_FinalAnalysis_files/figure-html/all pneumonia mortality by census tract-3.png" width="75%" style="display: block; margin: auto;" />
 
 
 The maps above are informative, because they show chronological changes in LD/pneumonia deaths through time. But, our question of interest was whether the increase in pnuemonia deaths that we detected occurred in the same geographic areas as LD cases. To test this, we'll look at a map of the *change* in pneumonia mortality (during vs. before the LD outbreak) compared with the locations of LD cases. 
 
 ### Calculate and map difference between pneumonia mortality rates before and during the outbreak
 
-```{r, out.width="75%", echo=FALSE, warning=FALSE, message = FALSE, fig.align = 'center'}
-
-# This code creates maps of the *difference* between pneumonia mortality rates before and during the outbreak
-library(RColorBrewer)
-
-pneumo_map_diff <- ctractsmap +
-              geom_sf(aes(fill = inc_pd_diff)) +
-              scale_fill_viridis_c(limits = c(-1.1, 1.2)) +
-              #scale_fill_distiller(type= "div", palette = "BrBG", direction=1, limits=c(-1.1,1.1)) +
-              theme(text = element_text(size=8), 
-              axis.text.x = element_text(size = 8), axis.text.y = element_text(size = 8),
-              legend.title=element_text(size=8), legend.text=element_text(size=8), plot.title = element_text(size = 10, face="plain")) + 
-              guides(fill = guide_colourbar(title="Rate difference")) +
-              geom_sf(data = flint_ctracts, color = "white", fill = NA, size = 0.20) +
-              ggtitle("Difference in pneumonia mortality\nduring - before outbreak") +
-              coord_sf(datum=NA)
-
-# Same as above, but using quadrants in Flint
-pneumo_map_diff_quad <- pneumo_map_diff +
-          geom_sf(data = ctracts_merge_quad, aes(fill = inc_pd_diff)) +
-          geom_sf(data = ctracts_merge_nonflint_quad, aes(fill = inc_pd_diff)) +
-          scale_fill_viridis_c(limits = c(-0.3, 0.5)) +
-          #scale_fill_distiller(type= "div", palette = "BrBG", direction=1, limits=c(-1.1,1.1)) +          
-          theme(text = element_text(size=8), 
-          axis.text.x = element_text(size = 8), axis.text.y = element_text(size = 8),
-          legend.title=element_text(size=8), legend.text=element_text(size=8), plot.title = element_text(size = 10, face="plain")) + 
-          guides(fill = guide_colourbar(title="Rate difference")) +          
-          geom_sf(data = ctracts_merge_quad, color = "white", fill = NA, size = 0.20) +
-          ggtitle("Difference in pneumonia mortality\nduring - before outbreak") +
-          coord_sf(datum=NA) 
-
-# FIRST 6 MO OF outbreak
-ld_map_frst6mo_diff <- ctractsmap +
-          geom_sf(aes(fill = inc_ld_frst6mo)) +
-          scale_fill_viridis_c(name = "inc_ld_frst6mo", limits = c(0, 2.2), na.value = "grey") +
-          theme(text = element_text(size=10), 
-                axis.text.x = element_text(size = 8), axis.text.y = element_text(size = 8),
-                legend.title=element_text(size=8), legend.text=element_text(size=8), plot.title = element_text(size = 10, face="plain")) +          
-          guides(fill = guide_colourbar(title="LD cases per 1000")) +
-          geom_sf(data = flint_ctracts, color = "white", fill = NA, size = 0.20) + 
-          ggtitle("LD, first 6mo of outbreak") +
-          coord_sf(datum=NA)
-
-ld_map_frst6mo_quad_diff <- ld_map_frst6mo +
-          geom_sf(data = ctracts_merge_quad, aes(fill = inc_ld_frst6mo)) +
-          geom_sf(data = ctracts_merge_nonflint_quad, aes(fill = inc_ld_frst6mo)) +
-          scale_fill_viridis_c(limits = c(0, 0.6), na.value = "grey") +
-          theme(rect = element_blank(), legend.text=element_text(size=8), plot.title = element_text(size = 10, face="plain")) +
-          guides(fill = guide_colourbar(title="LD cases per 1000")) +
-          geom_sf(data = ctracts_merge_quad, color = "white", fill = NA, size = 0.20) + 
-          ggtitle("LD, first 6mo of outbreak") +
-          coord_sf(datum=NA)
-
-
-
-# ENTIRE DURATION OF outbreak
-ld_map_out_diff <- ctractsmap +
-          geom_sf(aes(fill = inc_ld_out)) +
-          scale_fill_viridis_c(name = "inc_ld_out", limits = c(0, 2.2), na.value = "grey") +
-           theme(text = element_text(size=10), 
-                axis.text.x = element_text(size = 8), axis.text.y = element_text(size = 8),
-                legend.title=element_text(size=8), legend.text=element_text(size=8), 
-                plot.title = element_text(size = 10, face = "plain")) + 
-          labs(caption="*white = Flint municipality census tracts") +
-          guides(fill = guide_colourbar(title="LD cases per 1000")) +
-          geom_sf(data = flint_ctracts, color = "white", fill = NA, size = 0.20) + 
-          ggtitle("LD, entire outbreak") +
-          coord_sf(datum=NA)
-
-ld_map_out_quad_diff <- ld_map_out +
-          geom_sf(data = ctracts_merge_quad, aes(fill = inc_ld_out)) +
-          geom_sf(data = ctracts_merge_nonflint_quad, aes(fill = inc_ld_out)) +
-          scale_fill_viridis_c(limits = c(0, 0.6), na.value = "grey") +
-          theme(text = element_text(size=10), 
-                axis.text.x = element_text(size = 8), axis.text.y = element_text(size = 8),
-                legend.title=element_text(size=8), legend.text=element_text(size=8), 
-                plot.title = element_text(size = 10, face="plain")) +           
-          guides(fill = guide_colourbar(title="LD cases per 1000")) +
-          geom_sf(data = ctracts_merge_quad, color = "white", fill = NA, size = 0.20) + 
-          ggtitle("LD, entire outbreak") +
-          coord_sf(datum=NA)
-
-
-# The code below produces 3 panels of maps. The first is the rate difference in pneumonia mortality, the second two are the LD cases in the first 5 months and during the entire period of the outbreak. 
-pd_diff_plot <- ggarrange(pneumo_map_diff, ld_map_frst6mo_diff, ld_map_out_diff, ncol=3, legend="bottom", align = "v")
-
-annotate_figure(pd_diff_plot, top = text_grob("Figure 6. Difference in pneumonia mortality in Genesee County, MI by census tract\n compared to LD", face = "bold"))
-
-```
+<img src="Frontline_Legionnaires_FinalAnalysis_files/figure-html/unnamed-chunk-14-1.png" width="75%" style="display: block; margin: auto;" />
 
 We see that generally, areas in west Flint and northwest of Flint had higher pneumonia mortality during the LD outbreak than before. That this spike in pneumonia mortality occurred in the same areas as many LD cases lived is consistent with the notion that at least some of the excess pneumonia mortality in Genesee County during this period was could have been due to undiagnosed LD cases in these areas. 
 
@@ -1296,8 +1425,8 @@ We also ran several sensitivity analyses, the most important of which are shown 
 
 Below is the statistical model repeated using WONDER data on pneumonia and LD deaths but with a separate term for the year 2017, when pneumonia deaths were elevated in Genesee for reasons unrelated to the 2014-15 LD outbreak.
 
-```{r}
 
+```r
 model_data <- deaths_full %>%
   filter(Deaths_Type == "P-V" & 
            ((Geography == "MI + Neighbors - Medium Metro" & Source == "WONDER") |
@@ -1332,11 +1461,61 @@ model_data <- deaths_full %>%
 #previously-run reproducible model as m1_sens1
 m1_sens1 <- readRDS("./model_objects/Bayesian_Model_Sensitivity1.rds")
 summary(m1_sens1)
+```
+
+```
+##  Family: negbinomial 
+##   Links: mu = log; shape = identity 
+## Formula: Deaths ~ Month + FluSeason + Geography + outbreak + Geo_ob + offset(log(Pop)) 
+##    Data: model_data (Number of observations: 168) 
+## Samples: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup samples = 4000
+## 
+## Population-Level Effects: 
+##                    Estimate Est.Error l-95% CI u-95% CI Eff.Sample Rhat
+## Intercept             -9.73      0.04    -9.81    -9.66       1478 1.00
+## MonthApril            -0.29      0.05    -0.38    -0.21       2056 1.00
+## MonthAugust           -0.45      0.05    -0.54    -0.36       2025 1.00
+## MonthDecember         -0.20      0.05    -0.29    -0.11       1919 1.00
+## MonthFebruary         -0.22      0.04    -0.30    -0.13       1852 1.00
+## MonthJuly             -0.50      0.05    -0.59    -0.41       1843 1.00
+## MonthJune             -0.46      0.05    -0.55    -0.37       1949 1.00
+## MonthMarch            -0.15      0.04    -0.23    -0.06       1987 1.00
+## MonthMay              -0.36      0.05    -0.45    -0.27       1968 1.00
+## MonthNovember         -0.34      0.05    -0.43    -0.24       1709 1.00
+## MonthOctober          -0.31      0.05    -0.40    -0.22       1596 1.00
+## MonthSeptember        -0.48      0.05    -0.57    -0.39       1924 1.00
+## FluSeason2011          0.07      0.04    -0.01     0.14       3356 1.00
+## FluSeason2013         -0.02      0.04    -0.09     0.05       3103 1.00
+## FluSeason2014         -0.10      0.04    -0.18    -0.02       2740 1.00
+## FluSeason2015         -0.06      0.07    -0.20     0.09       2618 1.00
+## FluSeason2016         -0.11      0.04    -0.18    -0.04       3187 1.00
+## FluSeason2017         -0.17      0.06    -0.29    -0.05       2231 1.00
+## FluSeason2018         -0.20      0.10    -0.38    -0.01       2257 1.00
+## GeographyGenesee      -0.11      0.04    -0.18    -0.04       2831 1.00
+## outbreak2017           0.02      0.07    -0.11     0.15       2481 1.00
+## outbreakEarly          0.01      0.05    -0.10     0.11       2968 1.00
+## outbreakLate           0.01      0.07    -0.12     0.15       3098 1.00
+## Geo_obGeneseeEarly     0.36      0.11     0.13     0.59       4274 1.00
+## Geo_obGeneseeLate      0.21      0.08     0.05     0.37       5090 1.00
+## Geo_obGensee2017       0.22      0.08     0.06     0.39       4914 1.00
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Eff.Sample Rhat
+## shape   205.83     56.80   117.67   339.49       3924 1.00
+## 
+## Samples were drawn using sampling(NUTS). For each parameter, Eff.Sample 
+## is a crude measure of effective sample size, and Rhat is the potential 
+## scale reduction factor on split chains (at convergence, Rhat = 1).
+```
+
+```r
 # plot(m1_sens1)
 # pp_check(m1_sens1)
 ```
 
-```{r}
+
+```r
 #Model predictions
 a <- fitted(m1_sens1, scale= "linear")
 model_data$pred_link <- a[,1] #These are fitted/CIs, not predict/PIs!
@@ -1369,8 +1548,10 @@ model_data$pred_ul <- exp(model_data$pred_link_ul)/model_data$Pop*1e6
       ggtitle("Figure A1.")
 ```
 
-```{r}
+![](Frontline_Legionnaires_FinalAnalysis_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
 
+
+```r
 #Make a counterfactual prediction where Genesee always follows control county trends
 model_data_cf <- model_data %>% 
   mutate(Geo_ob = "Neither")
@@ -1420,6 +1601,33 @@ kable(excess_deaths, digits = 1) %>%
   row_spec(3, bold = TRUE)
 ```
 
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Time_Period </th>
+   <th style="text-align:right;"> Excess_Deaths </th>
+   <th style="text-align:left;"> CI_95 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Early: May-October 2014 (6 Months) </td>
+   <td style="text-align:right;"> 34.7 </td>
+   <td style="text-align:left;"> 11.9, 60.7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Late: November 2014-October 2015 (12 Months) </td>
+   <td style="text-align:right;"> 43.0 </td>
+   <td style="text-align:left;"> 9.2, 79.7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-weight: bold;"> Full Outbreak (18 Months) </td>
+   <td style="text-align:right;font-weight: bold;"> 118.5 </td>
+   <td style="text-align:left;font-weight: bold;"> 31.4, 214.8 </td>
+  </tr>
+</tbody>
+</table>
+
 Giving 2017 its own term nearly *doubles* our estimate of the excess pneumonia deaths from 67 to 119. This is because in addition to during the LD outbreak pneumonia deaths in Genesee were also elevated relative to control counties in 2017 - we do not have an explanation for why. Including a separate interaction term for Genesee and 2017 sets the referent group against which we compare the LD outbreak as {January 2011-April 2014, January 2016-December 2016} rather than {January 2011-April 2014, January 2016-December *2017*}. During the former time frame Genesee pneumonia deaths rates were lower relative to control counties than during the latter, inflating the estimate of how much higher pneumonia death rates were during the LD outbreak. 
 
 This model also provides a better fit as seen in Figure A1, particularly in 2017. However, we relegated this to a sensitivity analysis as it was not our initial modeling objective and we do not have an explanation for why Genesee pneumonia death rates were elevated in 2017, leading us to feel like we might be improperly cherry-picking a control time period.
@@ -1429,8 +1637,8 @@ This model also provides a better fit as seen in Figure A1, particularly in 2017
 
 Below is the statistical model repeated using WONDER data on pneumonia and LD deaths but defining the period in which we count excess deaths as beginning in June 2014 (the month of the first reported LD case) rather than May 2014 (when we consider the outbreak likely to have begun for reasons listed above).
 
-```{r}
 
+```r
 model_data <- deaths_full %>%
   filter(Deaths_Type == "P-V" & 
            ((Geography == "MI + Neighbors - Medium Metro" & Source == "WONDER") |
@@ -1463,11 +1671,59 @@ model_data <- deaths_full %>%
 #previously-run reproducible model as m1_sens2
 m1_sens2 <- readRDS("./model_objects/Bayesian_Model_Sensitivity2.rds")
 summary(m1_sens2)
+```
+
+```
+##  Family: negbinomial 
+##   Links: mu = log; shape = identity 
+## Formula: Deaths ~ Month + FluSeason + Geography + outbreak + Geo_ob + offset(log(Pop)) 
+##    Data: model_data (Number of observations: 168) 
+## Samples: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup samples = 4000
+## 
+## Population-Level Effects: 
+##                    Estimate Est.Error l-95% CI u-95% CI Eff.Sample Rhat
+## Intercept             -9.74      0.04    -9.82    -9.66       1121 1.00
+## MonthApril            -0.29      0.04    -0.38    -0.20       1457 1.00
+## MonthAugust           -0.46      0.05    -0.55    -0.36       1452 1.00
+## MonthDecember         -0.21      0.05    -0.30    -0.12       1429 1.00
+## MonthFebruary         -0.22      0.05    -0.31    -0.13       1549 1.00
+## MonthJuly             -0.50      0.05    -0.59    -0.41       1522 1.00
+## MonthJune             -0.46      0.05    -0.55    -0.37       1447 1.00
+## MonthMarch            -0.15      0.05    -0.23    -0.06       1527 1.00
+## MonthMay              -0.35      0.05    -0.44    -0.26       1564 1.00
+## MonthNovember         -0.34      0.05    -0.44    -0.25       1568 1.00
+## MonthOctober          -0.32      0.05    -0.41    -0.23       1427 1.00
+## MonthSeptember        -0.48      0.05    -0.57    -0.39       1415 1.00
+## FluSeason2011          0.07      0.04    -0.01     0.14       2857 1.00
+## FluSeason2013         -0.02      0.04    -0.09     0.05       2500 1.00
+## FluSeason2014         -0.10      0.04    -0.18    -0.02       2319 1.00
+## FluSeason2015         -0.07      0.08    -0.21     0.08       2248 1.00
+## FluSeason2016         -0.11      0.04    -0.18    -0.04       2491 1.00
+## FluSeason2017         -0.14      0.04    -0.21    -0.06       2509 1.00
+## FluSeason2018         -0.14      0.06    -0.26    -0.02       3767 1.00
+## GeographyGenesee      -0.06      0.03    -0.13     0.00       3341 1.00
+## outbreakEarly          0.03      0.06    -0.08     0.14       2890 1.00
+## outbreakLate           0.03      0.07    -0.11     0.17       2933 1.00
+## Geo_obGeneseeEarly     0.33      0.12     0.09     0.57       4751 1.00
+## Geo_obGeneseeLate      0.16      0.08     0.00     0.33       4529 1.00
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Eff.Sample Rhat
+## shape   202.01     56.15   114.26   335.73       3353 1.00
+## 
+## Samples were drawn using sampling(NUTS). For each parameter, Eff.Sample 
+## is a crude measure of effective sample size, and Rhat is the potential 
+## scale reduction factor on split chains (at convergence, Rhat = 1).
+```
+
+```r
 # plot(m1_sens2)
 # pp_check(m1_sens2)
 ```
 
-```{r}
+
+```r
 #Model predictions
 a <- fitted(m1_sens2, scale= "linear")
 model_data$pred_link <- a[,1] #These are fitted/CIs, not predict/PIs!
@@ -1500,8 +1756,10 @@ model_data$pred_ul <- exp(model_data$pred_link_ul)/model_data$Pop*1e6
       ggtitle("Figure A2.")
 ```
 
-```{r}
+![](Frontline_Legionnaires_FinalAnalysis_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
 
+
+```r
 #Make a counterfactual prediction where Genesee always follows control county trends
 model_data_cf <- model_data %>% 
   mutate(Geo_ob = "Neither")
@@ -1551,6 +1809,33 @@ kable(excess_deaths, digits = 1) %>%
   row_spec(3, bold = TRUE)
 ```
 
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Time_Period </th>
+   <th style="text-align:right;"> Excess_Deaths </th>
+   <th style="text-align:left;"> CI_95 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Early: June-October 2014 (5 Months) </td>
+   <td style="text-align:right;"> 26.9 </td>
+   <td style="text-align:left;"> 6.9, 50.4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Late: November 2014-October 2015 (12 Months) </td>
+   <td style="text-align:right;"> 34.4 </td>
+   <td style="text-align:left;"> 0.5, 72.2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-weight: bold;"> Full Outbreak (17 Months) </td>
+   <td style="text-align:right;font-weight: bold;"> 61.3 </td>
+   <td style="text-align:left;font-weight: bold;"> 7.4, 122.6 </td>
+  </tr>
+</tbody>
+</table>
+
 This causes our estimate of excess pneumonia deaths to drop slightly from 67.1 to 61.3 (95% credible interval: 7.4 to 122.6). It does not substantively change our conclusions, however.
 
 ### Mapping by Quadrant Rather than Census Tract
@@ -1558,19 +1843,33 @@ This causes our estimate of excess pneumonia deaths to drop slightly from 67.1 t
 Since number of cases/deaths in individual census tracts can be small, we wanted to look at these same maps but with Flint and non-Flint census tracts aggregated in quadrants. Note the different color scale on these maps as compared to the previous maps.
 
 
-```{r, fig.align = 'center'}
 
+```r
 ld_plot_quad <- ggarrange(ld_map_frst6mo_quad, ld_map_out_quad, ncol=2, common.legend = TRUE, legend="bottom")
 annotate_figure(ld_plot_quad, top = text_grob("Figure A3. Legionnaire's cases in Genesee County, MI by census tract\nMay 2014 - October 2015", face = "bold"))
+```
 
+<img src="Frontline_Legionnaires_FinalAnalysis_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" />
+
+```r
 pd_plot1_quad <- ggarrange(pneumo_map_b4_quad, pneumo_map_frst6mo_quad, ncol=2, legend="none")
 pd_plot2_quad <- ggarrange(pneumo_map_out_quad, pneumo_map_after_quad, ncol=2, common.legend = TRUE, legend="bottom")
 annotate_figure(pd_plot1_quad, top = text_grob("Figure A4. Pneumonia mortality in Genesee County, MI by census tract\nJan 2011-Jan 2018", face = "bold"))
-pd_plot2_quad
+```
 
+<img src="Frontline_Legionnaires_FinalAnalysis_files/figure-html/unnamed-chunk-21-2.png" style="display: block; margin: auto;" />
+
+```r
+pd_plot2_quad
+```
+
+<img src="Frontline_Legionnaires_FinalAnalysis_files/figure-html/unnamed-chunk-21-3.png" style="display: block; margin: auto;" />
+
+```r
 pd_diff_plot_quad <- ggarrange(pneumo_map_diff_quad, ld_map_frst6mo_quad_diff, ld_map_out_quad_diff, ncol=3, legend="bottom")
 annotate_figure(pd_diff_plot_quad, top = text_grob("Figure A5. Difference in pneumonia mortality in Genesee County, MI by census tract\n compared to LD", face = "bold"))
-
 ```
+
+<img src="Frontline_Legionnaires_FinalAnalysis_files/figure-html/unnamed-chunk-21-4.png" style="display: block; margin: auto;" />
 
 These maps are not substantively different as maps showing census tract-level data.
