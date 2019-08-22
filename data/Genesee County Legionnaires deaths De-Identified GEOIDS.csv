@@ -1,0 +1,68 @@
+Unique ID,HospitalAdmitDate,DateOf Death,CauseOfDeath,DiedWhileHospitalizedWithLegionnairesOrWithin30DaysFromLeavingHospital,CountyVsCity,GeoID,DiedMoreThan30DaysAfterLegionnairesDischarge
+509411,6/10/14,3/21/15,"Complications of subdural hematoma - slipped and fell in his home, ruled accidental",,COUNTY -- genesee,26049010910,YES
+501511,6/11/14,Alive,,,COUNTY -- genesee,26049010910,
+379825,6/19/14,Alive,,,COUNTY -- genesee,26049011402,
+129448,6/20/14,1/26/18,"Hypertension with end-stage renal disease and congestive heart failure, ruled natural. Autopsy conducted. ""years"" between onset and death",,COUNTY -- genesee,26049012501,YES
+621800,6/22/14,8/21/14,CVA >6 months between onset and death. Ruled natural causes,,COUNTY -- genesee,26049011505,YES
+741461,7/5/14,Alive,,,CITY -- Flint,26049001500,
+910887,7/6/14,Alive,,,CITY -- Flint,26049000500,
+759528,7/14/14,Alive,,,COUNTY -- genesee,26049011401,
+134356,7/24/14,7/28/14,"Lung cancer, acute respiratory failure, Pancyptopenia",YES,COUNTY -- genesee,26049011710,
+892236,7/24/14,12/17/14,"Systemic lupus erythematosis, ruled natural causes, ""years"" btw onset and death, no autopsy",,COUNTY -- genesee,26049012310,YES
+238264,7/26/14,Alive,,,CITY -- Flint,26049002800,
+823185,8/3/14,Alive,,,CITY -- Flint,26049000400,
+347877,8/18/14,9/5/14,"Respiratory failure, Heart failure",YES,CITY -- Flint,26049010810,
+585292,8/21/14,Alive,,,CITY -- Flint,26049010813,
+746305,8/22/14,Alive,,,CITY -- Flint,26049003200,
+133626,8/25/14,Alive,,,COUNTY -- genesee,26049012401,
+987572,8/28/14,2/12/19,,,CITY -- Flint,26049000400,YES
+994547,8/30/14,Alive,,,CITY -- Flint,26049010812,
+135522,8/31/14,9/9/16,"Hypertension, chronic kidney disease-stage 4, hyperlipidemia/all years between onset and death, ruled natural no autopsy",,COUNTY -- genesee,26049010810,YES
+903397,9/1/14,9/3/14,"Cardiac arrest, ESRD",YES,CITY -- Flint,26049003600,
+145942,9/5/14,Alive,,,CITY -- Flint,26049001600,
+555988,9/11/14,Alive,,,CITY -- Flint,26049002600,
+472047,9/13/14,4/21/18,,,CITY -- Flint,26049001600,YES
+130678,9/13/14,Alive,,,CITY -- Flint,26049002000/26049000600/26049001100,
+507291,9/20/14,Alive,,,CITY -- Flint,26049001300,
+798336,9/20/14,Alive,,,CITY -- Flint,26049010501,
+930364,9/22/14,Alive,,,CITY -- Flint,26049000500,
+501095,9/23/14,2/23/17,Anoxic encephalopathy-3 days; hypertensive heart disease-2 years; other significant condition: type II diabetes; ruled natural no autopsy. Smoker,,COUNTY -- genesee,26049010504,YES
+976418,9/27/14,Alive,,,CITY -- Flint,26049001300,
+431823,10/6/14,6/10/16,"Severe atherosclerosis-4 years; coronary artery disease-1 year; cerebrovascular disease-2 days; ruled natural, no autopsy",,CITY -- Flint,26049010812,YES
+805223,10/9/14,Alive,,,COUNTY -- genesee,26049012310,
+530916,10/9/14,Alive,,,CITY -- Flint,26049013500,
+158161,10/13/14,Alive,,,CITY -- Flint,26049001300,
+823840,10/27/14,12/26/15,"hypertensive arteriosclerotic cardiovascular disease, years; ruled natural, no autopsy",,CITY -- Flint,26049013500,YES
+970652,11/3/14,Alive,,,COUNTY -- genesee,26049010202,
+777038,11/8/14,1/14/17,"Cellulitis of Right Arm, Acute Kidney Injury on Chronic Kidney Disease, Acute Fibrillation",,CITY -- Flint,26049001600,YES
+780064,11/28/14,Alive,,,OTHER -- saginaw county,26145012700,
+465845,12/10/14,3/15/15,Ovarian cancer with metastasis to the brain,,COUNTY -- genesee,26049013002,YES
+184733,12/19/14,1/9/15,"Acute respiratory distress syndrome, Legionella pneumonia",YES,CITY -- Flint,26049001100,
+526913,12/22/14,Alive,,,COUNTY -- genesee,26049010503,
+849199,12/22/14,8/6/15,,,CITY -- Flint,26049010812,YES
+781694,1/13/15,Alive,,,CITY -- Flint,26049012008,
+468244,1/16/15,Alive,,,COUNTY -- genesee,26049011503,
+162790,1/28/15,2/9/15,Chronic Obstructive Pulmonary Disease,YES,COUNTY -- genesee,26049013001,
+534847,3/14/15,2/7/17,Dilated cardiomyopathy Complicating; Chronic Ethanol Use,,CITY -- Flint,26049002400,YES
+202976,7/8/15,8/31/15,Multiple Myeloma,,COUNTY -- genesee,26049012601,YES
+308452,8/1/15,8/7/15,"Legionella pneumonia, acute kidney failure",YES,COUNTY -- genesee,26049010603,
+542322,8/1/15,8/17/15,"Lung Cancer Stage IV, Advanced chronic obstructive pulmonary disease",YES,OTHER -- shiawassee county,,
+719481,8/1/15,8/22/15,Pancreatic Cancer,YES,COUNTY -- genesee,26155030100,
+900638,7/1/15,10/31/15,"Sepsis, Systeolic Congestive Heart Failure, Ischemic Cardiomayopathy, Acute Kidney Injury",,CITY -- Flint,26049000700,YES
+194351,7/1/15,8/2/15,"Adult respiratory distress syndrome, Legionella pneumonia",YES,COUNTY -- genesee,26049011401,
+592999,7/1/15,7/22/15,Chronic Obstructive Lung Disease,YES,COUNTY -- genesee,26049010113,
+830457,6/1/15,6/30/15,Healthcare-associated pneumonia,YES,CITY -- Flint,26049003300,
+485128,6/1/15,7/5/15,"Sepsis, Systeolic Congestive Heart Failure, Ischemic Cardiomayopathy, Acute Kidney Injury",YES,COUNTY -- genesee,26049011712,
+671259,5/1/15,12/13/15,End stage congestive heart failure,,COUNTY -- genesee,26049012201,YES
+519447,6/1/15,12/10/15,"Dementia, Parkinson's disease",,COUNTY -- genesee,26049010811,YES
+576508,6/1/14,Alive,PONTIAC FEVER,,COUNTY -- genesee,26049010504,
+919230,,12/21/17,"Disseminated Intravascular Coagulation (D.I.C.), Cardiopulmonary Arrest probably due to refractory hypotension & sepsis, Advanced debility. End stage renal disease, lupus, arthritis",,CITY -- Flint,26049002800,YES
+149842,,7/23/15,"Cardiomyopathy with severe Mitral regurgitation, acute on chronic kidney failure, atrial fibrillation",,COUNTY -- genesee,26049010603,YES
+993939,,6/1/16,,,COUNTY -- genesee,26049012310,YES
+176456,,Alive,NA,NA,NA,NA,NA
+847143,,Alive,NA,NA,NA,NA,NA
+980693,,Alive,NA,NA,NA,NA,NA
+402998,,Alive,NA,NA,NA,NA,NA
+604050,,Alive,NA,NA,NA,NA,NA
+657032,,Alive,NA,NA,NA,NA,NA
+657050,,Alive,NA,NA,NA,NA,NA
