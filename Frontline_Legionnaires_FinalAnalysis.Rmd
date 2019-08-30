@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 **Methods**: We used data from CDC's WONDER system - which tracks monthly death certificates in each U.S. county - on all non-viral pneumonia and LD (P+LD) deaths in residents of Genesee and similar counties in Michigan and neighboring states from 2011-2017. We used a Bayesian negative binomial model to calculate excess P+LD deaths in Genesee from May 2014-October 2015. We began in May 2014 to capture undiagnosed cases before the first identified case. We mapped these excess deaths to assess whether they overlapped geographically with reported LD cases. 
 
-**Results**: We estimated 68.4 excess P+LD deaths (95% credible interval: 27.5 to 114.4) in Genesee County during the LD outbreak. This is substantially higher than the 10 LD deaths among Genesee County residents reported by MDHHS. There is also geographic overlap of the excess P+LD deaths and LD cases, particularly in western Flint and northwestern non-Flint Genesee County.
+**Results**: We estimated 70.0 excess P+LD deaths (95% uncertainty interval (UI): 36 to 103) in Genesee County during the LD outbreak. This is substantially higher than the 10 LD deaths among Genesee County residents reported by MDHHS. There is also geographic overlap of the excess P+LD deaths and LD cases, particularly in western Flint and northwestern non-Flint Genesee County.
 
 **Conclusions**: We identified a large number of excess P+LD deaths during the 2014-15 Genesee County LD outbreak. While these findings on pneumonia deaths are consistent with the hypothesis that the LD outbreak was larger than reported, it remains unclear exactly how much larger the LD outbreak may have been.
 
@@ -33,13 +33,13 @@ From June 2014-October 2015, MDHHS reported an outbreak of Legionnaires' disease
 
 LD is a bacterial respiratory infection resulting in pneumonia. Because it presents like many other pneumonias and can typically be treated with antibiotics, many cases go undetected. This is particularly true when an LD outbreak is not known or suspected.
 
-State agencies reported 10 total LD deaths among Genesee County residents during the outbreak. Using data from a CDC-maintained national death reporting system, we estimated that from May 2014-October 2015 there were in fact *68.4 (95% credible interval: 27.5 to 114.4)* more total pneumonia and LD (P+LD) deaths among Genesee County residents than we would have expected based on what was happening in similar Midwestern counties. These extra deaths also overlapped geographically with many of the reported LD cases. 
+State agencies reported 10 total LD deaths among Genesee County residents during the outbreak. Using data from a CDC-maintained national death reporting system, we estimated that from May 2014-October 2015 there were in fact *70.0 (95% UI: 36 to 103)* more total pneumonia and LD (P+LD) deaths among Genesee County residents than we would have expected based on what was happening in similar Midwestern counties. These extra deaths also overlapped geographically with many of the reported LD cases. 
 
 Although the first LD case identified by the state was admitted to the hospital in June 2014, pneumonia deaths began an unseasonable uptick in May. This fact, along with the likelihood that the first identified LD case was not the first actual LD case, prompted us to begin counting excess pneumonia deaths in May rather than June. 
 
-Taken together, our results suggest the true death toll - and overall size of the LD outbreak - may have been larger than reported by the state. How much is an open question. There were 6-7x more extra P+LD deaths than reported LD deaths (68.4 vs. 10), but it is unlikely all of these extra deaths were due to LD. Some of them may have been caused by increases in other respiratory diseases or as a consequence of other stresses from the water crisis. This would suggest the true size of the outbreak was somewhere between what MDHHS reported and 6-7x higher. That said, the increase we observed is *specific to Genesee County*, meaning whatever caused these 68.4 deaths should have been occurring there and not elsewhere, even if it was not LD. 
+Taken together, our results suggest the true death toll - and overall size of the LD outbreak - may have been larger than reported by the state. How much is an open question. There were 6-7x more extra P+LD deaths than reported LD deaths (70 vs. 10), but it is unlikely all of these extra deaths were due to LD. Some of them may have been caused by increases in other respiratory diseases or as a consequence of other stresses from the water crisis. This would suggest the true size of the outbreak was somewhere between what MDHHS reported and 6-7x higher. That said, the increase we observed is *specific to Genesee County*, meaning whatever caused these 70 deaths should have been occurring there and not elsewhere, even if it was not LD. 
 
-It is also possible some LD deaths were not diagnosed as LD or pneumonia and therefore were not included in our 67.4 extra deaths. Furthermore, it is also possible that LD *cases* were even harder to identify than *deaths*. In other words, the true non-fatal case count could have been even more than 6-7x higher. Because there is no way to retroactively identify undiagnosed LD cases or deaths, it is difficult to know exactly how much larger the total LD outbreak was. 
+It is also possible some LD deaths were not diagnosed as LD or pneumonia and therefore were not included in our 70 extra deaths. Furthermore, it is also possible that LD *cases* were even harder to identify than *deaths*. In other words, the true non-fatal case count could have been even more than 6-7x higher. Because there is no way to retroactively identify undiagnosed LD cases or deaths, it is difficult to know exactly how much larger the total LD outbreak was. 
 
 In any event, the data suggests the LD outbreak was, in fact, larger than reported.
 
@@ -77,7 +77,7 @@ Then we need to load our data:
 
     We pulled data for Genesee County, Michigan and 45 control counties: other "Medium Metro" counties (per [National Center for  Health Statistics 2013 Urbanization Classifications]((https://www.cdc.gov/nchs/data_access/urban_rural.htm))) in Michigan and neighboring states (IL, IN, OH, WI). These counties include metropolitan areas with similar climates to Flint (e.g. Rockford, IL; Ft. Wayne and Evansville, IN; Lansing, MI; and Youngstown, Toledo, and Dayton, OH) and were chosen to reflect the counterfactual of what would have happened to pneumonia deaths in Genesee County absent the LD outbreak, water switch, and other attendant public health changes.
 
-    Deaths were identified in WONDER's Multiple Cause of Death file using ICD-10 codes J15-J18 for non-viral pneumonia plus A48.1 and A48.2 for LD. Pneumonia or LD could appear as any cause of death. LD deaths represented a very small fraction of total pneumonia deaths: there were 24,842 pneumonia deaths in the 45 control counties from 2011-2017 and only 38 (<0.2%) known additional LD deaths during that same time period. The CDC WONDER death counts just for Genesee County are occasionally suppressed because they're <10 per month; in such cases we assumed 10 deaths during the month.
+    Deaths were identified in WONDER's Multiple Cause of Death file using ICD-10 codes J15-J18 for non-viral pneumonia plus A48.1 and A48.2 for LD. Pneumonia or LD could appear as any cause of death. LD deaths represented a very small fraction of total pneumonia deaths: there were 24,842 pneumonia deaths in the 45 control counties from 2011-2017 and only 38 (<0.2%) known additional LD deaths during that same time period. The CDC WONDER death counts just for Genesee County are occasionally suppressed because they're <10 per month; in such cases we conservatively assumed 8 deaths during the month.
     
        This file also includes monthly LD case counts from [MDHHS' final chartbook report on the outbreak](https://content.govdelivery.com/attachments/MIDHHS/2018/05/29/file_attachments/1014713/GC%2BLegionella%2BChartBook%2BFINAL.pdf).
        
@@ -265,7 +265,7 @@ rm(pd_link)
   #Final linkage and calculation of pneumonia mortality rates
   deaths_full <- deaths_full %>% 
     left_join(pop_link, by = c("Month_Code", "Control_Type", "Geography")) %>% 
-    mutate(Deaths = case_when(Deaths == "Suppressed" ~ 10, #WONDER suppresses if deaths < 10
+    mutate(Deaths = case_when(Deaths == "Suppressed" ~ 8, #WONDER suppresses if deaths < 10
                               TRUE ~ as.numeric(Deaths)),
            rate = Deaths/Pop * 1e6,
            graph_group = str_c(Geography, " - ", Deaths_Type, " - ", Source),
@@ -783,7 +783,7 @@ We show the results of beginning our count of excess pneumonia deaths in June 20
 We split the outbreak into two periods: an "early" period during the first 6 months of LD (May-October 2014, a time during which pneumonia deaths were particularly elevated in **Figure 1a**), and a "late" period of the 12 succeeding months until the final LD case (November 2014-October 2015). We elected to use two periods because pneumonia mortality was particularly elevated during the early period, and including the periods separately generated a model with substantially better fit than a single term for the full outbreak period.
 
 
-```{r}
+```{r Run Excess Deaths Model}
 
 model_data <- deaths_full %>%
   filter(Deaths_Type == "P-V" & 
@@ -802,11 +802,19 @@ model_data <- deaths_full %>%
          FluSeason = relevel(FluSeason, ref = "2012"),
          Month= relevel(Month, ref = "January"))
 
-
+# #Prior predictive simulation to check veracity of prior choices
+# m1_prior <- brm(Deaths ~ Month + FluSeason + Geography + outbreak + Geo_ob + offset(log(Pop)),
+#           data = model_data, family="negbinomial",
+#           prior = c(prior(normal(-10, 2), class = Intercept),
+#               prior(normal(0, 1), class = b),
+#               prior(gamma(0.01, 0.01), class = shape)),
+#           cores = 4,
+#           sample_prior = "only", control = list(adapt_delta = 0.98))
+# pps <- predict(m1_prior)
 
 # m1 <- brm(Deaths ~ Month + FluSeason + Geography + outbreak + Geo_ob + offset(log(Pop)),
 #           data = model_data, family="negbinomial",
-#           prior = c(prior(normal(0, 10), class = Intercept),
+#           prior = c(prior(normal(-10, 5), class = Intercept),
 #               prior(normal(0, 1), class = b),
 #               prior(gamma(0.01, 0.01), class = shape)),
 #           cores = 4,
@@ -816,21 +824,21 @@ model_data <- deaths_full %>%
 #Avoid re-running actual Bayesian model because takes several minutes. Instead, read in 
 #previously-run reproducible model as m1
 m1 <- readRDS("./model_objects/Primary_Model_Bayesian.rds")
-summary(m1)
-# fixef(m1)
+summary(m1, prob = 0.90)
+# fixef(m1, prob = c(0.05, 0.95))
 # plot(m1)
 # pp_check(m1)
 
-#Get 95% credible intervals for interaction effects
+#Get 90% credible intervals for interaction effects
 # get_variables(m1)
-# t <- m1 %>% 
-#   spread_draws(b_GeographyGenesee, b_outbreakEarly, b_outbreakLate, b_Geo_obGeneseeEarly, b_Geo_obGeneseeLate) %>% 
+# t <- m1 %>%
+#   spread_draws(b_GeographyGenesee, b_outbreakEarly, b_outbreakLate, b_Geo_obGeneseeEarly, b_Geo_obGeneseeLate) %>%
 #   mutate(GenEarly = b_GeographyGenesee + b_outbreakEarly + b_Geo_obGeneseeEarly,
 #          GenLate = b_GeographyGenesee + b_outbreakLate + b_Geo_obGeneseeLate)
 # summary(t$GenEarly)
-# quantile(t$GenEarly, probs = c(0.025, 0.975))
+# quantile(t$GenEarly, probs = c(0.05, 0.95))
 # summary(t$GenLate)
-# quantile(t$GenLate, probs = c(0.025, 0.975))
+# quantile(t$GenLate, probs = c(0.05, 0.95))
 ```
 
 The main coefficients of interest here are the interaction between geography and whether we are during the outbreak (Geo_ob). These coefficients are positive, suggesting that there is an elevated non-viral pneumonia + LD death rate in Genesee specifically during the late (0.17) and especially early (0.33) portions of the outbreak, after accounting for trends in pneumonia mortality in control counties.
@@ -839,9 +847,9 @@ Visualizing this model hopefully makes our conclusions clearer. **Figure 3** plo
 
 Note that the lines are only allowed to diverge during the two LD periods because that's how we coded our model. The point is that when we *allow* the lines to diverge (because we would expect LD to be affecting the rates during these times), they do.
 
-```{r}
+```{r Plot Excess Deaths Model Predictions}
 #Model predictions
-a <- fitted(m1, scale= "linear")
+a <- fitted(m1, scale= "linear", probs = c(0.05, 0.95))
 model_data$pred_link <- a[,1] #These are fitted/CIs, not predict/PIs! For log-deaths
 model_data$pred_link_ll <- a[,3] #Log-deaths
 model_data$pred_link_ul <- a[,4] #Log-deaths
@@ -874,17 +882,18 @@ model_data$pred_ul <- exp(model_data$pred_link_ul)/model_data$Pop*1e6 #Mortality
 
 That graph shows that the estimated non-viral pneumonia + LD death rates are higher in Genesee during the LD outbreak. How many excess deaths does that translate to? The code below calculates that.
 
-```{r}
+```{r Calculate Excess Deaths and Plot Posterior Distributions}
 
 #Make a counterfactual prediction for Genesee without an LD outbreak using a model fed only data from control counties and Genesee during non-LD periods
 model_data_cf <- model_data %>%
   mutate(Deaths = case_when(Geo_ob != "Neither" ~ as.numeric(NA), #Set outcome to missing so will be dropped by model
-                            TRUE ~ Deaths))
+                            TRUE ~ Deaths),
+         Geo_ob = "Neither")
 
 #Model itself is commented out and read in to save time
 # m1_cf <- brm(Deaths ~ Month + FluSeason + Geography + offset(log(Pop)),
 #           data = model_data_cf, family="negbinomial",
-#           prior = c(prior(normal(0, 10), class = Intercept),
+#           prior = c(prior(normal(-10, 5), class = Intercept),
 #               prior(normal(0, 1), class = b),
 #               prior(gamma(0.01, 0.01), class = shape)),
 #           cores = 4,
@@ -895,51 +904,50 @@ m1_cf <- readRDS("./model_objects/Primary_Model_Bayesian_cf.rds")
 model_data$pred_cf <- exp(fitted(m1_cf, scale= "linear",
                                  newdata = model_data_cf))[,1]/model_data$Pop*1e6 #Mortality rate
 
-#Calculate excess pneumonia mortality during LD outbreak
-model_data <- model_data %>% 
-  mutate(rate_diff = pred - pred_cf,
-         case_diff = rate_diff/1e6*Pop)
 
 
-#Get excess deaths point estimate and 95% CIs by: 
+#Get excess deaths point estimate and 90% UIs by: 
 #1. Generating factual and counterfactual posterior samples, 
 #2.Taking the differences, 
 #3. Summing across defined months, and 
-#4. Taking mean, 2.5/97.5 %ile of these differentiated sums
-a <- fitted(m1, scale = "linear", summary = F) #Log-deaths
+#4. Taking mean, 5/95 %ile of these differentiated sums
+set.seed(08282019)
+a <- cbind(model_data$Deaths, replicate(3999,model_data$Deaths)) %>% 
+  t()#Factual death counts
 b <- fitted(m1, scale = "linear", summary = T) #Log-deaths
-a_cf <- fitted(m1_cf, scale = "linear", newdata = model_data_cf, summary = F) #Log-deaths
+a_cf <- posterior_predict(m1_cf, scale = "linear", newdata = model_data_cf, summary = F) #Log-deaths
+a_cf <- a_cf[sample(nrow(a_cf)),] #Randomly sort posterior predictive draws
 b_cf <- fitted(m1_cf, scale = "linear", newdata = model_data_cf, summary = T) #Log-deaths
 
-c <- as.data.frame(exp(a) - exp(a_cf)) #Difference in deaths
+c <- as.data.frame(a - a_cf) #Difference in deaths
 colnames(c) <- str_c(model_data$Geography, model_data$Month, model_data$Year)
 
 
 #Final calculations
 df <- data.frame(Excess_Deaths = double(1),
-                 CI_95 = character(1))
+                 CI_90 = character(1))
 
 early_samples <- c %>% select(GeneseeMay2014:GeneseeOctober2014) %>% rowSums()
 early <- df %>% 
   mutate(Excess_Deaths = round(mean(early_samples),1),
-         CI_95 = str_c(round(quantile(early_samples, probs = 0.025), 1),
-                       round(quantile(early_samples, probs = 0.975), 1), sep = ", "))
+         CI_90 = str_c(round(quantile(early_samples, probs = 0.05), 1),
+                       round(quantile(early_samples, probs = 0.95), 1), sep = ", "))
 
 late_samples <- c %>% select(GeneseeNovember2014:GeneseeOctober2015) %>% rowSums()
 late <- df %>% 
   mutate(Excess_Deaths = round(mean(late_samples),1),
-         CI_95 = str_c(round(quantile(late_samples, probs = 0.025), 1),
-                       round(quantile(late_samples, probs = 0.975), 1), sep = ", "))
+         CI_90 = str_c(round(quantile(late_samples, probs = 0.05), 1),
+                       round(quantile(late_samples, probs = 0.95), 1), sep = ", "))
 
 full_samples <- c %>% select(GeneseeMay2014:GeneseeOctober2015) %>% rowSums()
 full <- df %>% 
   mutate(Excess_Deaths = round(mean(full_samples),1),
-         CI_95 = str_c(round(quantile(full_samples, probs = 0.025), 1),
-                       round(quantile(full_samples, probs = 0.975), 1), sep = ", "))
+         CI_90 = str_c(round(quantile(full_samples, probs = 0.05), 1),
+                       round(quantile(full_samples, probs = 0.95), 1), sep = ", "))
 
 excess_deaths <- rbind(early, late, full) %>%
   mutate(Time_Period = c("Early: May-October 2014 (6 Months)", "Late: November 2014-October 2015 (12 Months)", "Full Outbreak (18 Months)")) %>% 
-  select(Time_Period, Excess_Deaths, CI_95)
+  select(Time_Period, Excess_Deaths, CI_90)
 rm(early, late, full)
 kable(excess_deaths, digits = 1) %>% 
   kable_styling(full_width = FALSE) %>% 
@@ -953,17 +961,18 @@ plot <- plot %>% gather(key = "Time Period", value = "Excess Deaths") %>%
   
   plot %>% 
   ggplot() +
-  geom_halfeyeh(aes(x = `Excess Deaths`, y = `Time Period`), .width = 0.95,
+  geom_halfeyeh(aes(x = `Excess Deaths`, y = `Time Period`), .width = 0.90,
                 point_interval = mean_qi) +
     labs(x = "Excess Deaths", y = "Outbreak Time Period",
-         caption = "Dot is mean, bars are 95% credible interval.")
+         caption = "Dot is mean, bars are 90% UI.") +
+    scale_x_continuous(breaks = c(seq(-20, 140, 20)))
 ```
 
-There were about 68.4 (95% credible interval: 27.5 to 114.4) more pneumonia deaths in Genesee County during the LD outbreak than we would have expected based on what was happening in similar counties during this same time. MDHHS reported 10 official LD deaths among Genesee County residents during this period.
+We estimate there were 70.0 (95% UI: 36 to 103) more pneumonia deaths in Genesee County during the LD outbreak than we would have expected based on what was happening in similar counties during this same time. MDHHS reported 10 official LD deaths among Genesee County residents during this period.
 
-During the early stage of the outbreak (6 months), when the largest gap was evident in **Figure 1a**, there were 32.7 (95% credible interval: 11.2 to 57.5) excess pneumonia deaths versus 4 LD deaths reported by MDHHS among Genesee residents.
+During the early stage of the outbreak (6 months), when the largest gap was evident in **Figure 1a**, there were 33.8 (95% UI: 17 to 49) excess pneumonia deaths versus 4 LD deaths reported by MDHHS among Genesee residents.
 
-During the late stage of the outbreak (12 months) there were 35.7 (95% credible interval: 1.4 to 72.5) excess pneumonia deaths versus 6 Genesee resident LD deaths reported by MDHHS.
+During the late stage of the outbreak (12 months) there were 36.2 (95% UI: 9 to 63) excess pneumonia deaths versus 6 Genesee resident LD deaths reported by MDHHS.
 
 
 
@@ -1358,7 +1367,7 @@ model_data <- deaths_full %>%
 # Takes several minutes to run - simply load model from memory below
 # m1_sens1 <- brm(Deaths ~ Month + FluSeason + Geography + outbreak + Geo_ob + offset(log(Pop)),
 #           data = model_data, family="negbinomial",
-#           prior = c(prior(normal(0, 10), class = Intercept),
+#           prior = c(prior(normal(-10, 5), class = Intercept),
 #               prior(normal(0, 1), class = b),
 #               prior(gamma(0.01, 0.01), class = shape)),
 #           cores = 4,
@@ -1368,14 +1377,14 @@ model_data <- deaths_full %>%
 #Avoid re-running actual Bayesian model because takes several minutes. Instead, read in 
 #previously-run reproducible model as m1_sens1
 m1_sens1 <- readRDS("./model_objects/Bayesian_Model_Sensitivity1.rds")
-summary(m1_sens1)
+summary(m1_sens1, prob = 0.90)
 # plot(m1_sens1)
 # pp_check(m1_sens1)
 ```
 
 ```{r}
 #Model predictions
-a <- fitted(m1_sens1, scale = "linear")
+a <- fitted(m1_sens1, scale = "linear", probs = c(0.05, 0.95))
 model_data$pred_link <- a[,1] #These are fitted/CIs, not predict/PIs!
 model_data$pred_link_ll <- a[,3]
 model_data$pred_link_ul <- a[,4]
@@ -1416,7 +1425,7 @@ model_data_cf <- model_data %>%
 #Model itself is commented out and read in to save time
 # m1_sens1_cf <- brm(Deaths ~ Month + FluSeason + Geography + Seventeen + Geography*Seventeen + offset(log(Pop)),
 #           data = model_data_cf, family="negbinomial",
-#           prior = c(prior(normal(0, 10), class = Intercept),
+#           prior = c(prior(normal(-10, 5), class = Intercept),
 #               prior(normal(0, 1), class = b),
 #               prior(gamma(0.01, 0.01), class = shape)),
 #           cores = 4,
@@ -1433,52 +1442,55 @@ model_data <- model_data %>%
   mutate(rate_diff = pred - pred_cf,
          case_diff = rate_diff/1e6*Pop)
 
-#Get excess deaths point estimate and 95% CIs by: 
+#Get excess deaths point estimate and 90% CIs by: 
 #1. Generating factual and counterfactual posterior samples, 
 #2.Taking the differences, 
 #3. Summing across defined months, and 
-#4. Taking mean, 2.5/97.5 %ile of these differentiated sums
-a <- fitted(m1_sens1, scale = "linear", summary = F) #Log-deaths
+#4. Taking mean, 5/95 %ile of these differentiated sums
+set.seed(08282019)
+a <- cbind(model_data$Deaths, replicate(3999,model_data$Deaths)) %>% 
+  t()#Factual death counts
 b <- fitted(m1_sens1, scale = "linear", summary = T) #Log-deaths
-a_cf <- fitted(m1_sens1_cf, scale = "linear", newdata = model_data_cf, summary = F) #Log-deaths
+a_cf <- posterior_predict(m1_sens1_cf, scale = "linear", newdata = model_data_cf, summary = F) #Log-deaths
+a_cf <- a_cf[sample(nrow(a_cf)),] #Randomly sort posterior predictive draws
 b_cf <- fitted(m1_sens1_cf, scale = "linear", newdata = model_data_cf, summary = T) #Log-deaths
 
-c <- as.data.frame(exp(a) - exp(a_cf)) #Difference in deaths
+c <- as.data.frame(a - a_cf) #Difference in deaths
 colnames(c) <- str_c(model_data$Geography, model_data$Month, model_data$Year)
 
 
 #Final calculations
 df <- data.frame(Excess_Deaths = double(1),
-                 CI_95 = character(1))
+                 CI_90 = character(1))
 
 early_samples <- c %>% select(GeneseeMay2014:GeneseeOctober2014) %>% rowSums()
 early <- df %>% 
   mutate(Excess_Deaths = round(mean(early_samples),1),
-         CI_95 = str_c(round(quantile(early_samples, probs = 0.025), 1),
-                       round(quantile(early_samples, probs = 0.975), 1), sep = ", "))
+         CI_90 = str_c(round(quantile(early_samples, probs = 0.05), 1),
+                       round(quantile(early_samples, probs = 0.95), 1), sep = ", "))
 
 late_samples <- c %>% select(GeneseeNovember2014:GeneseeOctober2015) %>% rowSums()
 late <- df %>% 
   mutate(Excess_Deaths = round(mean(late_samples),1),
-         CI_95 = str_c(round(quantile(late_samples, probs = 0.025), 1),
-                       round(quantile(late_samples, probs = 0.975), 1), sep = ", "))
+         CI_90 = str_c(round(quantile(late_samples, probs = 0.05), 1),
+                       round(quantile(late_samples, probs = 0.95), 1), sep = ", "))
 
 full_samples <- c %>% select(GeneseeMay2014:GeneseeOctober2015) %>% rowSums()
 full <- df %>% 
   mutate(Excess_Deaths = round(mean(full_samples),1),
-         CI_95 = str_c(round(quantile(full_samples, probs = 0.025), 1),
-                       round(quantile(full_samples, probs = 0.975), 1), sep = ", "))
+         CI_90 = str_c(round(quantile(full_samples, probs = 0.05), 1),
+                       round(quantile(full_samples, probs = 0.95), 1), sep = ", "))
 
 excess_deaths <- rbind(early, late, full) %>%
   mutate(Time_Period = c("Early: May-October 2014 (6 Months)", "Late: November 2014-October 2015 (12 Months)", "Full Outbreak (18 Months)")) %>% 
-  select(Time_Period, Excess_Deaths, CI_95)
+  select(Time_Period, Excess_Deaths, CI_90)
 rm(early, late, full)
 kable(excess_deaths, digits = 1) %>% 
   kable_styling(full_width = FALSE) %>% 
   row_spec(3, bold = TRUE)
 ```
 
-Giving 2017 its own term increases our estimate of the excess pneumonia deaths from 68 to 79. This is because in addition to during the LD outbreak pneumonia deaths in Genesee were also elevated relative to control counties in 2017 - we do not have an explanation for why. Including a separate interaction term for Genesee and 2017 sets the referent group against which we compare the LD outbreak as {January 2011-April 2014, January 2016-December 2016} rather than {January 2011-April 2014, January 2016-December *2017*}. During the former time frame Genesee pneumonia deaths rates were lower relative to control counties than during the latter, inflating the estimate of how much higher pneumonia death rates were during the LD outbreak. 
+Giving 2017 its own term increases our estimate of the excess pneumonia deaths from 70 to 80. This is because in addition to during the LD outbreak pneumonia deaths in Genesee were also elevated relative to control counties in 2017 - we do not have an explanation for why. Including a separate interaction term for Genesee and 2017 sets the referent group against which we compare the LD outbreak as {January 2011-April 2014, January 2016-December 2016} rather than {January 2011-April 2014, January 2016-December *2017*}. During the former time frame Genesee pneumonia deaths rates were lower relative to control counties than during the latter, inflating the estimate of how much higher pneumonia death rates were during the LD outbreak. 
 
 This model also provides a better fit as seen in Figure A1, particularly in 2017. However, we relegated this to a sensitivity analysis as it was not our initial modeling objective and we do not have an explanation for why Genesee pneumonia death rates were elevated in 2017, leading us to feel like we might be improperly cherry-picking a control time period.
 
@@ -1510,7 +1522,7 @@ model_data <- deaths_full %>%
 # Takes several minutes to run - simply load model from memory below
 # m1_sens2 <- brm(Deaths ~ Month + FluSeason + Geography + outbreak + Geo_ob + offset(log(Pop)),
 #           data = model_data, family="negbinomial",
-#           prior = c(prior(normal(0, 10), class = Intercept),
+#           prior = c(prior(normal(-10, 5), class = Intercept),
 #               prior(normal(0, 1), class = b),
 #               prior(gamma(0.01, 0.01), class = shape)),
 #           cores = 4,
@@ -1520,14 +1532,14 @@ model_data <- deaths_full %>%
 #Avoid re-running actual Bayesian model because takes several minutes. Instead, read in 
 #previously-run reproducible model as m1_sens2
 m1_sens2 <- readRDS("./model_objects/Bayesian_Model_Sensitivity2.rds")
-summary(m1_sens2)
+summary(m1_sens2, prob = 0.90)
 # plot(m1_sens2)
 # pp_check(m1_sens2)
 ```
 
 ```{r}
 #Model predictions
-a <- fitted(m1_sens2, scale= "linear")
+a <- fitted(m1_sens2, scale= "linear", probs = c(0.05, 0.95))
 model_data$pred_link <- a[,1] #These are fitted/CIs, not predict/PIs!
 model_data$pred_link_ll <- a[,3]
 model_data$pred_link_ul <- a[,4]
@@ -1568,7 +1580,7 @@ model_data_cf <- model_data %>%
 #Model itself is commented out and read in to save time
 # m1_sens2_cf <- brm(Deaths ~ Month + FluSeason + Geography + offset(log(Pop)),
 #           data = model_data_cf, family="negbinomial",
-#           prior = c(prior(normal(0, 10), class = Intercept),
+#           prior = c(prior(normal(-10, 5), class = Intercept),
 #               prior(normal(0, 1), class = b),
 #               prior(gamma(0.01, 0.01), class = shape)),
 #           cores = 4,
@@ -1585,45 +1597,48 @@ model_data <- model_data %>%
   mutate(rate_diff = pred - pred_cf,
          case_diff = rate_diff/1e6*Pop)
 
-#Get excess deaths point estimate and 95% CIs by: 
+#Get excess deaths point estimate and 90% CIs by: 
 #1. Generating factual and counterfactual posterior samples, 
 #2.Taking the differences, 
 #3. Summing across defined months, and 
-#4. Taking mean, 2.5/97.5 %ile of these differentiated sums
-a <- fitted(m1_sens2, scale = "linear", summary = F)
-b <- fitted(m1_sens2, scale = "linear", summary = T)
-a_cf <- fitted(m1_sens2_cf, scale = "linear", newdata = model_data_cf, summary = F)
-b_cf <- fitted(m1_sens2_cf, scale = "linear", newdata = model_data_cf, summary = T)
+#4. Taking mean, 5/95 %ile of these differentiated sums
+set.seed(08282019)
+a <- cbind(model_data$Deaths, replicate(3999,model_data$Deaths)) %>% 
+  t()#Factual death counts
+b <- fitted(m1_sens2, scale = "linear", summary = T) #Log-deaths
+a_cf <- posterior_predict(m1_sens2_cf, scale = "linear", newdata = model_data_cf, summary = F) #Log-deaths
+a_cf <- a_cf[sample(nrow(a_cf)),] #Randomly sort posterior predictive draws
+b_cf <- fitted(m1_sens2_cf, scale = "linear", newdata = model_data_cf, summary = T) #Log-deaths
 
-c <- as.data.frame(exp(a) - exp(a_cf)) #Difference in cases
+c <- as.data.frame(a - a_cf) #Difference in cases
 colnames(c) <- str_c(model_data$Geography, model_data$Month, model_data$Year)
 
 
 #Final calculations
 df <- data.frame(Excess_Deaths = double(1),
-                 CI_95 = character(1))
+                 CI_90 = character(1))
 
 early_samples <- c %>% select(GeneseeJune2014:GeneseeOctober2014) %>% rowSums()
 early <- df %>% 
   mutate(Excess_Deaths = round(mean(early_samples),1),
-         CI_95 = str_c(round(quantile(early_samples, probs = 0.025), 1),
-                       round(quantile(early_samples, probs = 0.975), 1), sep = ", "))
+         CI_90 = str_c(round(quantile(early_samples, probs = 0.05), 1),
+                       round(quantile(early_samples, probs = 0.95), 1), sep = ", "))
 
 late_samples <- c %>% select(GeneseeNovember2014:GeneseeOctober2015) %>% rowSums()
 late <- df %>% 
   mutate(Excess_Deaths = round(mean(late_samples),1),
-         CI_95 = str_c(round(quantile(late_samples, probs = 0.025), 1),
-                       round(quantile(late_samples, probs = 0.975), 1), sep = ", "))
+         CI_90 = str_c(round(quantile(late_samples, probs = 0.05), 1),
+                       round(quantile(late_samples, probs = 0.95), 1), sep = ", "))
 
 full_samples <- c %>% select(GeneseeJune2014:GeneseeOctober2015) %>% rowSums()
 full <- df %>% 
   mutate(Excess_Deaths = round(mean(full_samples),1),
-         CI_95 = str_c(round(quantile(full_samples, probs = 0.025), 1),
-                       round(quantile(full_samples, probs = 0.975), 1), sep = ", "))
+         CI_90 = str_c(round(quantile(full_samples, probs = 0.05), 1),
+                       round(quantile(full_samples, probs = 0.95), 1), sep = ", "))
 
 excess_deaths <- rbind(early, late, full) %>%
   mutate(Time_Period = c("Early: June-October 2014 (5 Months)", "Late: November 2014-October 2015 (12 Months)", "Full Outbreak (17 Months)")) %>% 
-  select(Time_Period, Excess_Deaths, CI_95)
+  select(Time_Period, Excess_Deaths, CI_90)
 rm(early, late, full)
 
 kable(excess_deaths, digits = 1) %>% 
@@ -1631,7 +1646,7 @@ kable(excess_deaths, digits = 1) %>%
   row_spec(3, bold = TRUE)
 ```
 
-This causes our estimate of excess pneumonia deaths to drop slightly from 68.4 to 63.9 (95% credible interval: 23.0 to 108.2). It does not substantively change our conclusions, however.
+This causes our estimate of excess pneumonia deaths to drop slightly from 70.0 to 64.7 (95% UI: 32 to 96). It does not substantively change our conclusions, however.
 
 ### Mapping by Quadrant Rather than Census Tract
 
