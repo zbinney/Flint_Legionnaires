@@ -55,7 +55,7 @@ Because LD is a nationally notifiable disease, it is important to note that the 
 
 First we need to load some necessary packages.
 ```{r}
-  pacman::p_load(readxl, tidyverse, rstudioapi, rmarkdown, lubridate, epitools, gridExtra, knitr, kableExtra, viridis, stringr, sf, rvest, rgdal, sp, ggsn, RColorBrewer, maptools, here, rgeos, ggthemes, grid, cowplot, ggpubr, brms, tidybayes)
+  pacman::p_load(readxl, tidyverse, rstudioapi, rmarkdown, lubridate, epitools, gridExtra, knitr, kableExtra, viridis, stringr, sf, rvest, rgdal, sp, ggsn, RColorBrewer, maptools, here, rgeos, ggthemes, grid, cowplot, ggpubr, brms, tidybayes, wesanderson)
 ```
 
 
@@ -675,7 +675,7 @@ ctracts_merge_nonflint_quad$inc_ld_out[is.na(ctracts_merge_nonflint_quad$inc_ld_
 
 **Figure 1a** is a plot of P+LD death rates by month and year for Genesee County and the 45 control counties, both from WONDER. The time between the vertical blue lines delineate the start and end of the Flint municipal water source change from Detroit to the Flint River (04/25/2014-10/16/2015); the vertical green lines delineate the official start and end of the Flint LD outbreak per MDHHS (June 2014-October 2015). The shaded areas represent 95% confidence intervals (CIs) for the monthly rates.
 
-**Figure 1b** depicts Genesee County LD cases by month per MDHHS.
+**Figure 1b** depicts Genesee County LD cases by month of symptom onset per MDHHS.
 
 ```{r, fig.height=8}
 graph <- deaths_full %>%
@@ -693,14 +693,16 @@ p1 <- graph %>%
   xlab("Month") +
   ylab("Mortality Rate per 1,000,000") +
   theme(legend.title = element_blank(), legend.position = "bottom",
-        axis.text.x = element_text(angle = 90)) +
+        axis.text.x = element_text(angle = 60, hjust = 1)) +
+  scale_color_manual(values = c("#F21A00", "#3B9AB2")) +
+  scale_fill_manual(values = c("#F21A00", "#3B9AB2")) +
   scale_x_date(date_breaks = '6 months',
-        date_labels = '%m%Y',
+        date_labels = '%b %Y',
         expand = c(0,0)) +
-  geom_vline(xintercept = water_dates, color = "blue") +   
-  geom_text(aes(x = water_dates[1], label="\nFlint River water switch", y=80), color="blue", angle=90, size = 3, vjust = -0.25) +
-geom_vline(xintercept = leg_ob_dates, color = "darkgreen") +   
-  geom_text(aes(x = leg_ob_dates[1], label="\nLD outbreak", y=80), color="darkgreen", angle=90, size = 3) +
+  geom_vline(xintercept = water_dates, color = "#F98400") +   
+  geom_text(aes(x = water_dates[1], label="\nFlint River water switch", y=80), color="#F98400", angle=90, size = 3, vjust = -0.25) +
+geom_vline(xintercept = leg_ob_dates, color = "#E1AF00") +   
+  geom_text(aes(x = leg_ob_dates[1], label="\nLD outbreak", y=80), color="#E1AF00", angle=90, size = 3) +
   ggtitle("Figure 1a.")
 
 graph_leg <- deaths_full %>%
@@ -712,18 +714,18 @@ graph_leg <- deaths_full %>%
 
 p2 <- graph_leg %>% 
   ggplot(aes(x = axis_date, y = Deaths)) + 
-  geom_line(color = "darkorange") +
+  geom_line(color = "#00A08A") +
   xlab("Month") +
   ylab("LD Cases") +
   theme(legend.title = element_blank(), legend.position = "bottom",
-        axis.text.x = element_text(angle = 90)) +
+        axis.text.x = element_text(angle = 60, hjust = 1)) +
   scale_x_date(date_breaks = '6 months',
-        date_labels = '%m%Y',
+        date_labels = '%b %Y',
         expand = c(0,0)) +
-  geom_vline(xintercept = water_dates, color = "blue") +   
-  geom_text(aes(x = water_dates[1], label="\nFlint River water switch", y=10), color="blue", angle=90, size = 3, vjust = -0.25) +
-geom_vline(xintercept = leg_ob_dates, color = "darkgreen") +   
-  geom_text(aes(x = leg_ob_dates[1], label="\nLD outbreak", y=10), color="darkgreen", angle=90, size = 3)+
+  geom_vline(xintercept = water_dates, color = "#F98400") +   
+  geom_text(aes(x = water_dates[1], label="\nFlint River water switch", y=10), color="#F98400", angle=90, size = 3, vjust = -0.25) +
+geom_vline(xintercept = leg_ob_dates, color = "#E1AF00") +   
+  geom_text(aes(x = leg_ob_dates[1], label="\nLD outbreak", y=10), color="#E1AF00", angle=90, size = 3)+
   ggtitle("Figure 1b.")
 
 grid.arrange(p1, p2, nrow = 2)
@@ -752,13 +754,15 @@ graph %>%
   ylab("Mortality Rate per 1,000,000") +
   theme(legend.title = element_blank(), legend.position = "bottom",
         axis.text.x = element_text(angle = 90)) +
+  scale_color_manual(values = c("#F21A00", "#3B9AB2")) +
+  scale_fill_manual(values = c("#F21A00", "#3B9AB2")) +
   scale_x_date(date_breaks = '6 months',
-        date_labels = '%m%Y',
+        date_labels = '%b %Y',
         expand = c(0,0)) +
-  geom_vline(xintercept = water_dates, color = "blue") +   
-  geom_text(aes(x = water_dates[1], label="\nFlint River water switch", y=80), color="blue", angle=90, size = 3, vjust = -0.25) +
-geom_vline(xintercept = leg_ob_dates, color = "darkgreen") +   
-  geom_text(aes(x = leg_ob_dates[1], label="\nLD outbreak", y=80), color="darkgreen", angle=90, size = 3) +
+  geom_vline(xintercept = water_dates, color = "#F98400") +   
+  geom_text(aes(x = water_dates[1], label="\nFlint River water switch", y=80), color="#F98400", angle=90, size = 3, vjust = -0.25) +
+geom_vline(xintercept = leg_ob_dates, color = "#E1AF00") +   
+  geom_text(aes(x = leg_ob_dates[1], label="\nLD outbreak", y=80), color="#E1AF00", angle=90, size = 3) +
   ggtitle("Figure 2.")
 
 ```
@@ -869,14 +873,16 @@ model_data$pred_ul <- exp(model_data$pred_link_ul)/model_data$Pop*1e6 #Mortality
       xlab("Month") +
       ylab("Mortality Rate per 1,000,000") +
       theme(legend.title = element_blank(), legend.position = "bottom",
-            axis.text.x = element_text(angle = 90)) +
+            axis.text.x = element_text(angle = 60, hjust = 1)) +
+      scale_color_manual(values = c("#F21A00", "#3B9AB2")) +
+      scale_fill_manual(values = c("#F21A00", "#3B9AB2")) +
       scale_x_date(date_breaks = '6 months',
-            date_labels = '%m%Y',
+            date_labels = '%b %Y',
             expand = c(0,0)) +
-      geom_vline(xintercept = water_dates, color = "blue") +   
-      geom_text(aes(x = water_dates[1], label="\nFlint River water switch", y=70), color="blue", angle=90, size = 3, vjust = -0.25) +
-    geom_vline(xintercept = leg_ob_dates, color = "darkgreen") +   
-      geom_text(aes(x = leg_ob_dates[1], label="\nLD outbreak", y=70), color="darkgreen", angle=90, size = 3) +
+      geom_vline(xintercept = water_dates, color = "#F98400") +   
+      geom_text(aes(x = water_dates[1], label="\nFlint River water switch", y=80), color="#F98400", angle=90, size = 3, vjust = -0.25) +
+      geom_vline(xintercept = leg_ob_dates, color = "#E1AF00") +   
+    geom_text(aes(x = leg_ob_dates[1], label="\nLD outbreak", y=80), color="#E1AF00", angle=90, size = 3) +
       ggtitle("Figure 3.")
 ```
 
